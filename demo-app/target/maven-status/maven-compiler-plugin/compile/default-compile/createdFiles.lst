@@ -1,0 +1,11 @@
+es\ucm\fdi\tfg\demo\ContextualDemoController.class
+es\ucm\fdi\tfg\demo\DemoApplication.class
+es\ucm\fdi\tfg\demo\security\AutoAdvancedSecurityAspect.class
+es\ucm\fdi\tfg\demo\security\AutoSecurityConfig.class
+es\ucm\fdi\tfg\demo\security\aspects\AutoMaskingAspect.class
+es\ucm\fdi\tfg\demo\security\DemoSecurityConfigPolicyConfig.class
+es\ucm\fdi\tfg\demo\VulnerableController.class
+es\ucm\fdi\tfg\demo\DemoSecurityConfig.class
+es\ucm\fdi\tfg\demo\security\AutoMaskingLoggingAspect.class
+es\ucm\fdi\tfg\demo\UnprotectedController.class
+es\ucm\fdi\tfg\demo\UserService.class

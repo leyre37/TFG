@@ -1,0 +1,9 @@
+policies:
+  REST_STRICT:
+    access: "hasRole('PAYMENT_ADMIN')"
+    csrf: "required"
+    cors:
+      allowed_origins: "https://trusted-domain.com"
+      mode: "strict"
+    headers:
+      X-Content-Type-Options: "nosniff"

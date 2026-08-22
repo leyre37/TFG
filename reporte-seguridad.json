@@ -1,0 +1,134 @@
+{
+  "nombre_proyecto": "tfg-leyre",
+  "total_hallazgos": 16,
+  "hallazgos": [
+    {
+      "id_regla": "SPRING-SEC-001",
+      "severidad": "CRITICAL",
+      "archivo": "DemoSecurityConfig.java",
+      "linea": 58,
+      "descripcion": "La protección CSRF está desactivada. Esto expone la aplicación a ataques de falsificación de petición.",
+      "remediacion": "Habilita la protección por defecto:<br><pre>.csrf(Customizer.withDefaults())</pre>"
+    },
+    {
+      "id_regla": "SEC-NET-001",
+      "severidad": "WARNING",
+      "archivo": "DemoSecurityConfig.java",
+      "linea": 26,
+      "descripcion": "Uso de protocolo inseguro (HTTP). La comunicación podría ser interceptada.",
+      "remediacion": "Cambia el protocolo a la versión cifrada:<br><pre>\"https://...\"</pre>"
+    },
+    {
+      "id_regla": "SEC-CRYPTO-002",
+      "severidad": "WARNING",
+      "archivo": "DemoSecurityConfig.java",
+      "linea": 29,
+      "descripcion": "Generador de números aleatorios inseguro detectado.",
+      "remediacion": "Usa un generador criptográficamente fuerte:<br><pre>new SecureRandom()</pre>"
+    },
+    {
+      "id_regla": "SEC-PWD-001",
+      "severidad": "CRITICAL",
+      "archivo": "DemoSecurityConfig.java",
+      "linea": 39,
+      "descripcion": "Algoritmo de hash MD5 inseguro detectado.",
+      "remediacion": "Usa un algoritmo moderno:<br><pre>new BCryptPasswordEncoder()</pre>"
+    },
+    {
+      "id_regla": "SEC-AUTH-001",
+      "severidad": "CRITICAL",
+      "archivo": "DemoSecurityConfig.java",
+      "linea": 52,
+      "descripcion": "Uso peligroso de 'permitAll()' en una operación de escritura.",
+      "remediacion": "Protege los métodos de escritura:<br><pre>.requestMatchers(HttpMethod.POST, \"/**\").authenticated()</pre>"
+    },
+    {
+      "id_regla": "SEC-SECRET-001",
+      "severidad": "CRITICAL",
+      "archivo": "DemoSecurityConfig.java",
+      "linea": 22,
+      "descripcion": "Se ha detectado un posible secreto (contraseña/token) escrito en el código.",
+      "remediacion": "Extrae el secreto a una variable de entorno:<br><pre>System.getenv(\"DB_PASSWORD\")</pre>"
+    },
+    {
+      "id_regla": "SEC-SECRET-001",
+      "severidad": "CRITICAL",
+      "archivo": "DemoSecurityConfig.java",
+      "linea": 23,
+      "descripcion": "Se ha detectado un posible secreto (contraseña/token) escrito en el código.",
+      "remediacion": "Extrae el secreto a una variable de entorno:<br><pre>System.getenv(\"DB_PASSWORD\")</pre>"
+    },
+    {
+      "id_regla": "SEC-HEAD-001",
+      "severidad": "WARNING",
+      "archivo": "DemoSecurityConfig.java",
+      "linea": 51,
+      "descripcion": "Falta configuración de X-Frame-Options (protección contra Clickjacking).",
+      "remediacion": "Añade: <br><pre>.headers(h -> h.frameOptions(f -> f.deny()))</pre>"
+    },
+    {
+      "id_regla": "SEC-HEAD-001",
+      "severidad": "WARNING",
+      "archivo": "DemoSecurityConfig.java",
+      "linea": 51,
+      "descripcion": "Falta Content-Security-Policy (CSP) para mitigar ataques XSS.",
+      "remediacion": "Añade una política estricta:<br><pre>.headers(h -> h.contentSecurityPolicy(c -> c.policyDirectives(\"default-src 'self'\")))</pre>"
+    },
+    {
+      "id_regla": "SEC-AUTH-002",
+      "severidad": "WARNING",
+      "archivo": "UserService.java",
+      "linea": 14,
+      "descripcion": "Método de servicio público sin anotación de seguridad.",
+      "remediacion": "Añade control de acceso al método:<br><pre>@PreAuthorize(\"hasRole('ADMIN')\")</pre>"
+    },
+    {
+      "id_regla": "SEC-SPEL-002",
+      "severidad": "WARNING",
+      "archivo": "UserService.java",
+      "linea": 9,
+      "descripcion": "Invocación de métodos externos en SpEL.",
+      "remediacion": "Evita llamar a beans externos en SpEL si no es estrictamente necesario."
+    },
+    {
+      "id_regla": "SEC-SPEL-002",
+      "severidad": "WARNING",
+      "archivo": "UserService.java",
+      "linea": 18,
+      "descripcion": "Invocación de métodos externos en SpEL.",
+      "remediacion": "Evita llamar a beans externos en SpEL si no es estrictamente necesario."
+    },
+    {
+      "id_regla": "SEC-SPEL-001",
+      "severidad": "WARNING",
+      "archivo": "UserService.java",
+      "linea": 21,
+      "descripcion": "Expresión SpEL trivial (acceso total).",
+      "remediacion": "Define reglas de acceso específicas: <br><pre>@PreAuthorize(\"hasRole('USER')\")</pre>"
+    },
+    {
+      "id_regla": "SEC-SPEL-002",
+      "severidad": "WARNING",
+      "archivo": "UserService.java",
+      "linea": 21,
+      "descripcion": "Invocación de métodos externos en SpEL.",
+      "remediacion": "Evita llamar a beans externos en SpEL si no es estrictamente necesario."
+    },
+    {
+      "id_regla": "SEC-INJ-001",
+      "severidad": "CRITICAL",
+      "archivo": "VulnerableController.java",
+      "linea": 12,
+      "descripcion": "Inyección de comandos detectada: una entrada de usuario llega a la ejecución del sistema.",
+      "remediacion": "Usa ProcessBuilder con argumentos separados:<br><pre>new ProcessBuilder(\"cmd\", var)</pre>"
+    },
+    {
+      "id_regla": "SEC-INJ-003",
+      "severidad": "CRITICAL",
+      "archivo": "VulnerableController.java",
+      "linea": 26,
+      "descripcion": "Posible XSS reflejado: la entrada del usuario se devuelve al navegador sin ser saneada.",
+      "remediacion": "Escapa la salida HTML:<br><pre>HtmlUtils.htmlEscape(userInput)</pre>"
+    }
+  ]
+}

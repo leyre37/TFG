@@ -1,0 +1,49 @@
+REPORTE DE SEGURIDAD - Sat Jul 04 14:45:30 CEST 2026
+[CRITICAL] ID: SPRING-SEC-001 en DemoSecurityConfig.java (Línea 58)
+    Detalle: La protección CSRF está desactivada. Esto expone la aplicación a ataques de falsificación de petición.
+    SOLUCIÓN SUGERIDA: Habilita la protección por defecto:<br><pre>.csrf(Customizer.withDefaults())</pre>
+[WARNING] ID: SEC-NET-001 en DemoSecurityConfig.java (Línea 26)
+    Detalle: Uso de protocolo inseguro (HTTP). La comunicación podría ser interceptada.
+    SOLUCIÓN SUGERIDA: Cambia el protocolo a la versión cifrada:<br><pre>"https://..."</pre>
+[WARNING] ID: SEC-CRYPTO-002 en DemoSecurityConfig.java (Línea 29)
+    Detalle: Generador de números aleatorios inseguro detectado.
+    SOLUCIÓN SUGERIDA: Usa un generador criptográficamente fuerte:<br><pre>new SecureRandom()</pre>
+[CRITICAL] ID: SEC-PWD-001 en DemoSecurityConfig.java (Línea 39)
+    Detalle: Algoritmo de hash MD5 inseguro detectado.
+    SOLUCIÓN SUGERIDA: Usa un algoritmo moderno:<br><pre>new BCryptPasswordEncoder()</pre>
+[CRITICAL] ID: SEC-AUTH-001 en DemoSecurityConfig.java (Línea 52)
+    Detalle: Uso peligroso de 'permitAll()' en una operación de escritura.
+    SOLUCIÓN SUGERIDA: Protege los métodos de escritura:<br><pre>.requestMatchers(HttpMethod.POST, "/**").authenticated()</pre>
+[CRITICAL] ID: SEC-SECRET-001 en DemoSecurityConfig.java (Línea 22)
+    Detalle: Se ha detectado un posible secreto (contraseña/token) escrito en el código.
+    SOLUCIÓN SUGERIDA: Extrae el secreto a una variable de entorno:<br><pre>System.getenv("DB_PASSWORD")</pre>
+[CRITICAL] ID: SEC-SECRET-001 en DemoSecurityConfig.java (Línea 23)
+    Detalle: Se ha detectado un posible secreto (contraseña/token) escrito en el código.
+    SOLUCIÓN SUGERIDA: Extrae el secreto a una variable de entorno:<br><pre>System.getenv("DB_PASSWORD")</pre>
+[WARNING] ID: SEC-HEAD-001 en DemoSecurityConfig.java (Línea 51)
+    Detalle: Falta configuración de X-Frame-Options (protección contra Clickjacking).
+    SOLUCIÓN SUGERIDA: Añade: <br><pre>.headers(h -> h.frameOptions(f -> f.deny()))</pre>
+[WARNING] ID: SEC-HEAD-001 en DemoSecurityConfig.java (Línea 51)
+    Detalle: Falta Content-Security-Policy (CSP) para mitigar ataques XSS.
+    SOLUCIÓN SUGERIDA: Añade una política estricta:<br><pre>.headers(h -> h.contentSecurityPolicy(c -> c.policyDirectives("default-src 'self'")))</pre>
+[WARNING] ID: SEC-AUTH-002 en UserService.java (Línea 14)
+    Detalle: Método de servicio público sin anotación de seguridad.
+    SOLUCIÓN SUGERIDA: Añade control de acceso al método:<br><pre>@PreAuthorize("hasRole('ADMIN')")</pre>
+[WARNING] ID: SEC-SPEL-002 en UserService.java (Línea 9)
+    Detalle: Invocación de métodos externos en SpEL.
+    SOLUCIÓN SUGERIDA: Evita llamar a beans externos en SpEL si no es estrictamente necesario.
+[WARNING] ID: SEC-SPEL-002 en UserService.java (Línea 18)
+    Detalle: Invocación de métodos externos en SpEL.
+    SOLUCIÓN SUGERIDA: Evita llamar a beans externos en SpEL si no es estrictamente necesario.
+[WARNING] ID: SEC-SPEL-001 en UserService.java (Línea 21)
+    Detalle: Expresión SpEL trivial (acceso total).
+    SOLUCIÓN SUGERIDA: Define reglas de acceso específicas: <br><pre>@PreAuthorize("hasRole('USER')")</pre>
+[WARNING] ID: SEC-SPEL-002 en UserService.java (Línea 21)
+    Detalle: Invocación de métodos externos en SpEL.
+    SOLUCIÓN SUGERIDA: Evita llamar a beans externos en SpEL si no es estrictamente necesario.
+[CRITICAL] ID: SEC-INJ-001 en VulnerableController.java (Línea 12)
+    Detalle: Inyección de comandos detectada: una entrada de usuario llega a la ejecución del sistema.
+    SOLUCIÓN SUGERIDA: Usa ProcessBuilder con argumentos separados:<br><pre>new ProcessBuilder("cmd", var)</pre>
+[CRITICAL] ID: SEC-INJ-003 en VulnerableController.java (Línea 26)
+    Detalle: Posible XSS reflejado: la entrada del usuario se devuelve al navegador sin ser saneada.
+    SOLUCIÓN SUGERIDA: Escapa la salida HTML:<br><pre>HtmlUtils.htmlEscape(userInput)</pre>

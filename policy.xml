@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<policy name="TFG-Security-Default">
+    <rules>
+
+        <rule id="SPRING-SEC-001" name="CsrfDisabledRule" active="true" severity="CRITICAL" />
+        <rule id="SEC-PWD-001" name="PasswordEncoderInsecureRule" active="true" severity="CRITICAL" />
+        <rule id="SEC-SECRET-001" name="HardcodedSecretRule" active="true" severity="CRITICAL" />
+        <rule id="SEC-NET-001" name="InsecureProtocolRule" active="true" severity="WARNING" />
+        <rule id="SEC-AUTH-002" name="MissingPreAuthorizeRule" active="true" severity="WARNING" />
+        <rule id="SEC-CRYPTO-002" name="InsecureRandomRule" active="true" severity="WARNING" />
+        <rule id="SEC-AUTH-001" name="PermitAllOnWriteEndpointRule" active="true" severity="CRITICAL" />
+        <rule id="SEC-CORS-001" name="CorsMisconfigurationRule" active="true" severity="CRITICAL" />
+        <rule id="SEC-INJ-001" name="CommandInjectionRule" active="true" severity="CRITICAL" />
+        <rule id="SEC-INJ-002" name="SqlInjectionRule" active="true" severity="CRITICAL" />
+        <rule id="SEC-INJ-003" name="XssInjectionRule" active="true" severity="CRITICAL" />
+        <rule id="SEC-SPEL-001" name="SpELSecurityRule" active="true" severity="WARNING" />
+        <rule id="SEC-HEAD-001" name="SecurityHeadersRule" active="true" severity="WARNING" />
+
+        <!-- Bloqueo CI/CD para endpoints no protegidos -->
+        <rule id="SEC-CI-001" name="MissingSecurifyScanRule" active="true" severity="CRITICAL" />
+
+    </rules>
+    <settings>
+        <target-package>es.ucm.fdi.tfg.demo</target-package>
+        <!-- Lista de roles válidos para el chequeo RBAC -->
+        <allowed-roles>ROLE_ADMIN, ROLE_USER, ROLE_AUDITOR</allowed-roles>
+        <!-- Nivel mínimo para detener la compilación -->
+        <fail-on-severity>CRITICAL</fail-on-severity>
+    </settings>
+
+    <vulnerable-components>
+        <component artifact="spring-security-config" version="5.7.0" cve="CVE-2022-31692" severity="CRITICAL" />
+        <component artifact="log4j-core" version="2.14.1" cve="CVE-2021-44228" severity="CRITICAL" />
+    </vulnerable-components>
+</policy>

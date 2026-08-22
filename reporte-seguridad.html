@@ -1,0 +1,167 @@
+<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>
+<title>Auditoría de Seguridad TFG</title>
+<style>
+    :root { --critical: #e63946; --warning: #f4a261; --dark: #1a1f36; --bg: #f8fafc; }
+    body { font-family: sans-serif; margin: 0; background-color: var(--bg); color: #334155; }
+    .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+    .header { background: var(--dark); color: white; padding: 35px; border-radius: 16px; margin-bottom: 30px; text-align: center; }
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; }
+    .stat-card { background: white; padding: 25px; border-radius: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-top: 5px solid #cbd5e1; }
+    .stat-card.critical { border-top-color: var(--critical); }
+    .stat-card.warning { border-top-color: var(--warning); }
+    .stat-num { font-size: 42px; font-weight: bold; display: block; margin-bottom: 5px; }
+    .stat-label { font-size: 13px; font-weight: 600; color: #64748b; text-transform: uppercase; }
+    .search-box { width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 12px; border: 2px solid #ddd; font-size: 16px; box-sizing: border-box; outline: none; transition: border-color 0.3s; }
+    .search-box:focus { border-color: #007bff; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0 12px; }
+    th { padding: 0 20px 10px; text-align: center; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
+    td { background: white; padding: 25px 20px; border: none; vertical-align: middle; text-align: center; }
+    tr td:first-child { border-radius: 12px 0 0 12px; border-left: 6px solid #cbd5e1; font-weight: bold; }
+    tr td:last-child { border-radius: 0 12px 12px 0; }
+    tr.row-CRITICAL td:first-child { border-left-color: var(--critical); }
+    tr.row-WARNING td:first-child { border-left-color: var(--warning); }
+    .badge { padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; color: white; text-transform: uppercase; }
+    .badge-CRITICAL { background: var(--critical); }
+    .badge-WARNING { background: var(--warning); }
+    pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 12px; margin-top: 10px; overflow-x: auto; text-align: left; }
+    .remed { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 15px; border-radius: 8px; font-size: 13px; margin-top: 15px; text-align: left; }
+</style></head><body>
+<div class='container'>
+<div class='header'><h1>Security Analysis Dashboard</h1><p>Proyecto: <strong>tfg-leyre</strong> | Sat Jul 04 14:45:30 CEST 2026</p></div>
+<div class='stats-row'>
+    <div class='stat-card critical'><span class='stat-num' style='color:var(--critical)'>7</span><span class='stat-label'>Críticos</span></div>
+    <div class='stat-card warning'><span class='stat-num' style='color:var(--warning)'>9</span><span class='stat-label'>Advertencias</span></div>
+    <div class='stat-card'><span class='stat-num'>16</span><span class='stat-label'>Total Hallazgos</span></div>
+</div>
+<input type='text' id='searchInput' class='search-box' onkeyup='filterTable()' placeholder='Buscar por ID, archivo o descripción...'>
+<table id='findingsTable'><thead><tr><th>ID de Regla</th><th>Severidad</th><th>Ubicación</th><th>Detalle y Recomendación</th></tr></thead><tbody>
+<tr class='row-CRITICAL'>
+    <td>SPRING-SEC-001</td>
+    <td><span class='badge badge-CRITICAL'>CRITICAL</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>DemoSecurityConfig.java</strong><br>Línea 58</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>La protección CSRF está desactivada. Esto expone la aplicación a ataques de falsificación de petición.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Habilita la protección por defecto:<br><pre>.csrf(Customizer.withDefaults())</pre></div></td>
+</tr>
+<tr class='row-WARNING'>
+    <td>SEC-NET-001</td>
+    <td><span class='badge badge-WARNING'>WARNING</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>DemoSecurityConfig.java</strong><br>Línea 26</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Uso de protocolo inseguro (HTTP). La comunicación podría ser interceptada.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Cambia el protocolo a la versión cifrada:<br><pre>"https://..."</pre></div></td>
+</tr>
+<tr class='row-WARNING'>
+    <td>SEC-CRYPTO-002</td>
+    <td><span class='badge badge-WARNING'>WARNING</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>DemoSecurityConfig.java</strong><br>Línea 29</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Generador de números aleatorios inseguro detectado.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Usa un generador criptográficamente fuerte:<br><pre>new SecureRandom()</pre></div></td>
+</tr>
+<tr class='row-CRITICAL'>
+    <td>SEC-PWD-001</td>
+    <td><span class='badge badge-CRITICAL'>CRITICAL</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>DemoSecurityConfig.java</strong><br>Línea 39</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Algoritmo de hash MD5 inseguro detectado.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Usa un algoritmo moderno:<br><pre>new BCryptPasswordEncoder()</pre></div></td>
+</tr>
+<tr class='row-CRITICAL'>
+    <td>SEC-AUTH-001</td>
+    <td><span class='badge badge-CRITICAL'>CRITICAL</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>DemoSecurityConfig.java</strong><br>Línea 52</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Uso peligroso de 'permitAll()' en una operación de escritura.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Protege los métodos de escritura:<br><pre>.requestMatchers(HttpMethod.POST, "/**").authenticated()</pre></div></td>
+</tr>
+<tr class='row-CRITICAL'>
+    <td>SEC-SECRET-001</td>
+    <td><span class='badge badge-CRITICAL'>CRITICAL</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>DemoSecurityConfig.java</strong><br>Línea 22</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Se ha detectado un posible secreto (contraseña/token) escrito en el código.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Extrae el secreto a una variable de entorno:<br><pre>System.getenv("DB_PASSWORD")</pre></div></td>
+</tr>
+<tr class='row-CRITICAL'>
+    <td>SEC-SECRET-001</td>
+    <td><span class='badge badge-CRITICAL'>CRITICAL</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>DemoSecurityConfig.java</strong><br>Línea 23</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Se ha detectado un posible secreto (contraseña/token) escrito en el código.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Extrae el secreto a una variable de entorno:<br><pre>System.getenv("DB_PASSWORD")</pre></div></td>
+</tr>
+<tr class='row-WARNING'>
+    <td>SEC-HEAD-001</td>
+    <td><span class='badge badge-WARNING'>WARNING</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>DemoSecurityConfig.java</strong><br>Línea 51</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Falta configuración de X-Frame-Options (protección contra Clickjacking).</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Añade: <br><pre>.headers(h -> h.frameOptions(f -> f.deny()))</pre></div></td>
+</tr>
+<tr class='row-WARNING'>
+    <td>SEC-HEAD-001</td>
+    <td><span class='badge badge-WARNING'>WARNING</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>DemoSecurityConfig.java</strong><br>Línea 51</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Falta Content-Security-Policy (CSP) para mitigar ataques XSS.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Añade una política estricta:<br><pre>.headers(h -> h.contentSecurityPolicy(c -> c.policyDirectives("default-src 'self'")))</pre></div></td>
+</tr>
+<tr class='row-WARNING'>
+    <td>SEC-AUTH-002</td>
+    <td><span class='badge badge-WARNING'>WARNING</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>UserService.java</strong><br>Línea 14</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Método de servicio público sin anotación de seguridad.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Añade control de acceso al método:<br><pre>@PreAuthorize("hasRole('ADMIN')")</pre></div></td>
+</tr>
+<tr class='row-WARNING'>
+    <td>SEC-SPEL-002</td>
+    <td><span class='badge badge-WARNING'>WARNING</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>UserService.java</strong><br>Línea 9</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Invocación de métodos externos en SpEL.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Evita llamar a beans externos en SpEL si no es estrictamente necesario.</div></td>
+</tr>
+<tr class='row-WARNING'>
+    <td>SEC-SPEL-002</td>
+    <td><span class='badge badge-WARNING'>WARNING</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>UserService.java</strong><br>Línea 18</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Invocación de métodos externos en SpEL.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Evita llamar a beans externos en SpEL si no es estrictamente necesario.</div></td>
+</tr>
+<tr class='row-WARNING'>
+    <td>SEC-SPEL-001</td>
+    <td><span class='badge badge-WARNING'>WARNING</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>UserService.java</strong><br>Línea 21</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Expresión SpEL trivial (acceso total).</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Define reglas de acceso específicas: <br><pre>@PreAuthorize("hasRole('USER')")</pre></div></td>
+</tr>
+<tr class='row-WARNING'>
+    <td>SEC-SPEL-002</td>
+    <td><span class='badge badge-WARNING'>WARNING</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>UserService.java</strong><br>Línea 21</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Invocación de métodos externos en SpEL.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Evita llamar a beans externos en SpEL si no es estrictamente necesario.</div></td>
+</tr>
+<tr class='row-CRITICAL'>
+    <td>SEC-INJ-001</td>
+    <td><span class='badge badge-CRITICAL'>CRITICAL</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>VulnerableController.java</strong><br>Línea 12</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Inyección de comandos detectada: una entrada de usuario llega a la ejecución del sistema.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Usa ProcessBuilder con argumentos separados:<br><pre>new ProcessBuilder("cmd", var)</pre></div></td>
+</tr>
+<tr class='row-CRITICAL'>
+    <td>SEC-INJ-003</td>
+    <td><span class='badge badge-CRITICAL'>CRITICAL</span></td>
+    <td style='font-size: 13px; color: #64748b;'><strong>VulnerableController.java</strong><br>Línea 26</td>
+    <td><div style='font-weight: 600; color: #1e293b; margin-bottom: 8px; text-align: left;'>Posible XSS reflejado: la entrada del usuario se devuelve al navegador sin ser saneada.</div>
+        <div class='remed'><strong>Sugerencia de Remediación:</strong><br>Escapa la salida HTML:<br><pre>HtmlUtils.htmlEscape(userInput)</pre></div></td>
+</tr>
+</tbody></table></div>
+<script>
+function filterTable() {
+    var input = document.getElementById('searchInput');
+    var filter = input.value.toUpperCase();
+    var table = document.getElementById('findingsTable');
+    var tr = table.getElementsByTagName('tr');
+    for (var i = 1; i < tr.length; i++) {
+        var text = tr[i].textContent || tr[i].innerText;
+        if (text.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = '';
+        } else {
+            tr[i].style.display = 'none';
+        }
+    }
+}
+</script>
+</body></html>
